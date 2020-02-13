@@ -1,0 +1,9 @@
+{
+	"auth": {
+		"cleancoordsd0f84470": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": []
+		}
+	}
+}
