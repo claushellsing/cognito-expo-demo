@@ -3,19 +3,18 @@ import { View } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { Auth } from "aws-amplify";
 
-export default function NewPassword({ route }) {
+export default function NewPassword({ navigation, route }) {
   //const username = route;
   const { cognitoUser } = route.params;
   const [password, setPassword] = React.useState("");
+  const [name, setName] = React.useState("");
 
   const changePassword = React.useCallback(async password => {
     try {
-      console.log(route);
       const loggedUser = await Auth.completeNewPassword(cognitoUser, password, {
-        name: "Rainer"
+        name: name
       });
-
-      console.log(loggedUser);
+      navigation.navigate("Main");
     } catch (err) {
       console.log(err);
     }
@@ -23,6 +22,11 @@ export default function NewPassword({ route }) {
 
   return (
     <View>
+      <TextInput
+        label="name"
+        value={name}
+        onChangeText={name => setName(name)}
+      />
       <TextInput
         label="password"
         secureTextEntry={true}

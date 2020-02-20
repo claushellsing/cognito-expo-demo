@@ -2,8 +2,10 @@ import React from "react";
 import { TextInput, Button, Snackbar } from "react-native-paper";
 import { View, Text } from "react-native";
 import { Auth } from "aws-amplify";
+import storeContext from "../../storeContext";
 
 export default function SignIn({ navigation }) {
+  const context = React.useContext(storeContext);
   const [user, setUser] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [visible, setVisible] = React.useState(false);
@@ -14,12 +16,15 @@ export default function SignIn({ navigation }) {
       const userResponse = await Auth.signIn(username, password);
 
       if (userResponse.challengeName === "NEW_PASSWORD_REQUIRED") {
-        navigation.push("NewPassword", {
+        navigation.nativate("NewPassword", {
           cognitoUser: userResponse
         });
       } else {
+        context.dispatch({ type: "login" });
+        navigation.navigate("Main");
       }
     } catch (err) {
+      console.log(err);
       setMessage(err.message);
       setVisible(err.message);
     }
